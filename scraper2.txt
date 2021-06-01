@@ -1,0 +1,32 @@
+your own scraper
+1.  scrapy shell https://hamims-books.herokuapp.com/1/
+
+>>>response.css('h3.panel-title::text').extract() 
+>>>response.css('a.panel-username::text').extract()
+>>>response.css('a.panel-username::attr(href)').extract()
+
+
+
+>>>bruin = response.css('div.col-md-4')
+>>>bruin.css('h3.panel-title::text').extract()
+>>>bruin.css('a.panel-username::text').extract()
+>>>bruin.css('a.panel-username::attr(href)').extract()
+>>>for bruin in response.css('div.col-md-4'):
+>>>	item = {
+		'bruin_title': bruin.css('h3.panel-title::text').extract(),
+		'bruin_username': bruin.css('a.panel-username::text').extract(),
+		'username_link': bruin.css('a.panel-username::attr(href)').extract(),
+	}
+>>>print(item)
+
+1. scrapy genspider bruin hamims-books.herokuapp.com
+2. scrapy runspider bruin.py -o bruins.csv
+
+>>>blog = response.css('div.col-sm-12')
+>>>blog.css('h3.::attr(href)').extract()
+
+1. scrapy shell https://hamims-blog.herokuapp.com/
+>>>response.css('span.step-links > a::attr(href)').extract_first() 
+>>>next_page_url = response.css('span.step-links > a::attr(href)').extract_first()
+>>>response.urljoin(next_page_url)
+

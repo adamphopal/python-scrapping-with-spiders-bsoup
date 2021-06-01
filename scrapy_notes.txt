@@ -1,0 +1,79 @@
+video 1: Getting Started with Web Scraping!!!
+1. scrapy shell http://quotes.toscrape.com/random
+2. print(response.text)
+>>> response.css('small.author::text').extract_first()
+>>> response.css('span.text::text').extract_first()
+>>> response.css('a.tag::text').extract()
+
+video 2: Creating your First Scrapy Spider!!!
+And you can see all available commands with:
+1. scrapy -h
+#to start a project:
+1. scrapy startproject myproject
+#Create a new spider:
+2. scrapy genspider example example.com
+3. scrapy genspider quotes toscrape.com
+#Now go inside the spiders directory, where quotes.py is and run:
+4. scrapy runspider quotes.py
+#save the data scraped into a file son or csv
+5. scrapy runspider quotes.py -o items.csv
+
+video 3: Scraping Multiple Items from a Page!!!
+1. scrapy shell 'http://quotes.toscrape.com/'
+>>> response.css('small.author::text').extract()
+>>> response.css('span.text::text').extract()
+>>> response.css('a.tag::text').extract()
+A better way of selecting multiply tags? div!!
+>>>response.css('div.quote')
+>>>quote = response.css('div.quote')[0]
+>>>quote
+#use extract_first to get it as a string, not a list
+>>>quote.css('small.author::text').extract_first()
+>>>quote.css('span.text::text').extract_first()
+#to get the first tag
+>>>quote.css('a.tag::text').extract_first()
+#to get all the tags for that one quote
+>>>quote.css('a.tag::text').extract()
+
+#Now that we extracted data from the first quote, we could apply it to all the data with a for loop, and extract all the data we want
+>>>for quote in response.css('div.quote'):
+>>>	item = {
+>>>		'author_name': quote.css('small.author::text').extract_first(),
+                'text': quote.css('span.text::text').extract_first(),
+                'tags': quote.css('a.tag::text').extract(),
+        }
+	print(item)
+1.scrapy runspider quotes2.py
+2.scrapy runspider quotes2.py -o items2.csv
+
+video 4: Following Pagination Links with Scrapy!!!
+>>>response.css('span.current > a')
+
+
+video 5: Scraping Details Pages from Listings!!!
+1. scrapy shell 'http://quotes.toscrape.com/'
+>>>response.css('div.quote > span > a::attr(href)').extract()
+
+video 6: Scraping Infinite Scrolling Pages!!!
+1. scrapy shell http://quotes.toscrape.com/api/quotes?page=4
+>>>print(response.text)
+>>>import json
+>>>data = json.loads(response.text)
+>>>data.keys()
+>>>data['quotes']
+>>>data['quotes'][0]
+>>>data['quotes'][0]['author']
+>>>data['quotes'][0]['author']['name']
+>>>data['quotes'][0]['text']
+>>>data['quotes'][0]['tags']
+>>>data['has_next']
+>>>data['page']
+
+
+
+
+
+
+
+
+
